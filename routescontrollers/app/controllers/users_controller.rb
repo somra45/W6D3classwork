@@ -17,5 +17,12 @@ class UsersController < ApplicationController
 
     def show
         render json: params
+        if params[:name]
+            user = User.find_by(name: params[:name])
+        elsif params[:email]
+            user = User.find_by(email: params[:email])
+        end
+        # render json: user
     end
+
 end
