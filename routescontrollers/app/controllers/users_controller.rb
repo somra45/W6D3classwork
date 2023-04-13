@@ -51,21 +51,37 @@ class UsersController < ApplicationController
     end
 
     def update
-        user = redirect_to 'users'
-        if params[:name] && params[:email]
-            user.name = params[:name]
-            user.email = params[:email]
-        elsif params[:name]
-            user.name = params[:name]
-        elsif params[:email]
-            user.email = params[:email]
-        end
+        # user = redirect_to 'users'
+        # if params[:name] && params[:email]
+        #     user.name = params[:name]
+        #     user.email = params[:email]
+        # elsif params[:name]
+        #     user.name = params[:name]
+        # elsif params[:email]
+        #     user.email = params[:email]
+        # end
 
-        render json: user
+        user = User.find(params[:id])
+
+        if user.update(user_params)
+            render json: user
+        else
+            render json: 'user cannot be updated', status: :not_changeable
+        end
     end
 
     def destroy
+        user = User.find(params[:id])
 
+        if user.destroy
+            render json: 'user deleted'
+        else
+            render json: 'user does not exist', status: :no_user_found
+        end
+    end
+
+    def user_params
+        params.require(:user).permit(:name, :email)
     end
 
 end
