@@ -18,14 +18,14 @@ class UsersController < ApplicationController
     def show
  
         if params[:username]
-            user = User.find_by(name: params[:name])
+            user = User.find_by(username: params[:username])
             if user
                 render json: user
             else
                 render user.errors.full_messages
             end
         else
-            user = User.find_by(id: params.values.first)
+            user = User.find(params[:id])
             if user
                 render json: user
             else

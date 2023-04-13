@@ -15,5 +15,9 @@ class User < ApplicationRecord
         through: :views,
         source: :artwork
 
+    has_many :comments, 
+        foreign_key: :author_id,
+        class_name: :Comment,
+        dependent: :destroy
         
 end
