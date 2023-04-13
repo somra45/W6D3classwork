@@ -7,7 +7,7 @@ class UsersController < ApplicationController
 
     def create
 
-        user = User.new(params.require(:user).permit(:name, :email))
+        user = User.new(params.require(:user).permit(:username))
         if user.save
             render json: user
         else
@@ -17,26 +17,19 @@ class UsersController < ApplicationController
 
     def show
  
-        if params[:name]
+        if params[:username]
             user = User.find_by(name: params[:name])
             if user
                 render json: user
             else
-                render 'User not in database'
-            end
-        elsif params[:email]
-            user = User.find_by(email: params[:email])
-            if user
-                render json: user
-            else
-                render 'User not in database'
+                render user.errors.full_messages
             end
         else
             user = User.find_by(id: params.values.first)
             if user
                 render json: user
             else
-                render 'User not in database'
+                render user.errors.full_messages
             end
         end
 
@@ -66,7 +59,7 @@ class UsersController < ApplicationController
         if user.update(user_params)
             render json: user
         else
-            render json: 'user cannot be updated', status: :not_changeable
+            render json: user.errors.full_messages, status: :not_changeable
         end
     end
 
@@ -81,7 +74,7 @@ class UsersController < ApplicationController
     end
 
     def user_params
-        params.require(:user).permit(:name, :email)
+        params.require(:user).permit(:username)
     end
 
 end
