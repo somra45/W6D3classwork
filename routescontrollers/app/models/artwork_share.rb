@@ -1,7 +1,7 @@
 class ArtworkShare < ApplicationRecord
-    validates :viewer_id, presence: true
-    validates :artwork_id, presence: true
-    validates :viewer_id, {scope: :artwork_id}, uniqueness: true
+    # validates :viewer_id, presence: true
+    # validates :artwork_id, presence: true
+    validates :viewer_id, uniqueness: { scope: :artwork_id }
 
     belongs_to :viewer,
         foreign_key: :viewer_id,
